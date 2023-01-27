@@ -28,6 +28,7 @@ const similarity = require('similarity')
 const linkpreview = require('link-preview-js')
 const toms = require('ms')
 const zrapi = require('zrapi')
+const jadianime = require('jadianime-ts')
 
 //Waktu
 const time = moment().tz('Asia/Jakarta').format("HH:mm:ss")
@@ -41,6 +42,7 @@ const { pinterest, wallpaper, wikimedia, quotesAnime } = require('../lib/scraper
 const { bytesToSize, TelegraPh, UploadFileUgu, webp2mp4File} = require('../lib/uploader')
 const { smsg, getGroupAdmins, formatp, tanggal, formatDate, getTime, isUrl, await, sleep, clockString, msToDate, sort, toNumber, enumGetKey, runtime, fetchJson, getBuffer, jsonformat, delay, format, logic, generateProfilePicture, parseMention, getRandom, pickRandom, removeEmojis } = require('../lib/myfunc')
 const { addResponList, delResponList, isAlreadyResponList, isAlreadyResponListGroup, sendResponList, updateResponList, getDataResponList } = require('../lib/respon-list')
+const { UploadFileUgu, webp2mp4File, TelegraPh } = require('./lib/uploader')
 
 //DB
 const dbog = require('../lib/Database.js')
@@ -1958,159 +1960,16 @@ Allah mengetahui apa-apa yang di hadapan mereka dan di belakang mereka, dan mere
   ichi.sendMessage(m.chat, {audio: { url: res }, mimetype: 'audio/mpeg'}, { quoted : m })
   }
   break
+ case 'jadianime':
+if (!quoted) throw `Kirim/Reply Image Dengan Caption ${prefix + command}`
+m.reply(mess.wait)
+let media = await ichi.downloadAndSaveMediaMessage(quoted)
+res = await TelegraPh(media)
+ichi.sendMessage(m.chat, { image: { url: res.img }, caption: '? nih' }, { quoted: m })
+break
 
 //Menu nya Kack >_<
 case 'menu': case 'help': case 'command': {
-  let { simplemenu } = require('../storage/confat.js')
-  var set = global.db.data.settings[botNumber]
-  if (set.listMessage) {
-  let sections = [
-  {
-  title: "Info Tentang Bot 🤖",
-  rows: [
-  {title: "Source Code 📖", rowId: `sc`, description: `Menampilkan Sumber Script Ini`},
-  {title: "Creator 👦", rowId: `creator`, description: `Menampilkan Kontak Creator Script Ini`},
-  {title: "Big Thanks To 🏆", rowId: `tqto`, description: `Menampilkan Teman-Teman Yang Sudah Membantu Dalam Perakitan Script Ini`}
-  ]
-  }, 
-  {
-  title: "Menunya Kaka 🔖",
-  rows: [
-  {title: "All Menu 📚", rowId: `allmenu`, description: `Menampilkan Seluruh Menu`},
-  {title: "Owner Menu 👦", rowId: `ownermenu`, description: `Menampilkan Menu Khusus Owner`},
-  {title: "Group Menu 👥", rowId: `groupmenu`, description: `Menampilkan Menu Khusus Group`},
-  {title: "Store Menu 🛒", rowId: `storemenu`, description: `Menampilkan Menu Khusus Store`},
-  {title: "Rpg Menu 🎰", rowId: `rpgmenu`, description: `Menampilkan Menu Khusus Rpg`},
-  {title: "Maker Menu 👨‍🎨", rowId: `makermenu`, description: `Menampilkan Menu Khusus Maker`},
-  {title: "Download Menu 📥", rowId: `downloadmenu`, description: `Menampilkan Menu Khusus Download`},
-  {title: "Ephoto Menu 🖼️", rowId: `ephotomenu`, description: `Menampilkan Menu Ephoto`},
-  {title: "Photooxy Menu 🖼️", rowId: `photooxymenu`, description: `Menampilkan Menu Photooxy`},
-  {title: "Textpro Menu 🖼️", rowId: `textpromenu`, description: `Menampilkan Menu Textpro`},
-  {title: "Fun Menu 🕹️️", rowId: `funmenu`, description: `Menampilkan Menu Fun`},
-  {title: "Islami Menu 🕋", rowId: `islamimenu`, description: `Menampilkan Menu Islami`},
-  {title: "Random Menu 😵", rowId: `randommenu`, description: `Menampilkan Menu Random`},
-  {title: "Search Menu 🔎", rowId: `searchmenu`, description: `Menampilkan Menu Khusus Search`},
-  {title: "Gacha Menu 🌀", rowId: `gachamenu`, description: `Menampilkan Menu Khusus Gacha`},
-  {title: "Asupan Menu ♀️", rowId: `asupanmenu`, description: `Menampilkan Menu Khusus Asupan`},
-  {title: "Random Image Menu 📱", rowId: `randomimagemenu`, description: `Menampilkan Menu Random Image`},
-  {title: "Randlm Anime Menu 📱", rowId: `randomanimemenu`, description: `Menampilkan Menu Random Anime`},
-  {title: "Wallpaper Menu 📱", rowId: `wallpapermenu`, description: `Menampilkan Menu Wallpaper`},
-  {title: "Nsfw Menu 🔞", rowId: `nsfwmenu`, description: `Menampilkan Menu Khusus Nsfw`},
-  {title: "Other Menu 🕵️‍♂️", rowId: `othermenu`, description: `Menampilkan Menu Lainnya`}
-  ]
-  },
-  ]
-  ichi.sendList(m.chat, 'Berikut Adalah List Command Yang Tersedia Di Dalam Bot. Jangan Lupa Untuk Selalu Mematuhi Rules 🤝', global.ownerName, `*Hello ${pushname} 👋*`, `Klik Disini 👇`, sections, m)
-  } else if (set.templateImage) {
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+simplemenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  } else if (set.templateVideo) {
-  ichi.sendMessage(m.chat, { video: global.thumbnail, caption: menu+simplemenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  } else if (set.templateDocument) {
-  ichi.sendMessage(m.chat, { document: global.doc, mimetype: 'application/pdf', fileName: 'Whatsapp Bot By '+global.ownerName, caption: menu+simplemenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  }
-  break
-case 'ownermenu': case 'ownercmd': {
-  let { ownermenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+ownermenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'groupmenu': case 'groupcmd': {
-  var { groupmenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+groupmenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'storemenu': case 'storecmd': {
-  var { storemenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+storemenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'rpgmenu': case 'rpgcmd': {
-  var { rpgmenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+rpgmenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'makermenu': case 'makercmd': {
-  var { makermenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+makermenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'downloadmenu': case 'downloadcmd': {
-  var { downloadmenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+downloadmenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'ephotomenu': case 'ephotocmd': {
-  var { ephotomenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+ephotomenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'photooxymenu': case 'photooxycmd': {
-  var { photooxymenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+photooxymenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'islamimenu': case 'islamicmd': {
-  var { islamimenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+islamimenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'randommenu': case 'randomcmd': {
-  var { randommenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+randommenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'searchmenu': case 'searchcmd': {
-  var { searchmenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+searchmenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'gachamenu': case 'gachacmd': {
-  var { gachamenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+gachamenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'asupanmenu': case 'asupancmd': {
-  var { asupanmenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+asupanmenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'randomimagemenu': case 'randomimagecmd': {
-  var { randomimagemenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+randomimagemenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'randomanimemenu': case 'randomanimecmd': {
-  var { randomanimemenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+randomanimemenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'wallpapermenu': case 'wallpapercmd': {
-  var { wallpapermenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+wallpapermenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'nsfwmenu': case 'nsfwcmd': {
-  var { nsfwmenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+nsfwmenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'othermenu': case 'othercmd': {
-  var { othermenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+othermenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'textpromenu': case 'textprocmd': {
-  var { textpromenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+textpromenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'funmenu': case 'funcmd': {
-  var { funmenu } = require('../storage/confat.js')
-  ichi.sendMessage(m.chat, { image: global.thumb, caption: menu+funmenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
-  }
-  break
-case 'allmenu': case 'allcmd': {
   let { funmenu, textpromenu, ownermenu, groupmenu, storemenu, rpgmenu, makermenu, downloadmenu, ephotomenu, photooxymenu, islamimenu, randommenu, searchmenu, gachamenu, asupanmenu, randomimagemenu, randomanimemenu, wallpapermenu, nsfwmenu, othermenu } = require('../storage/confat.js')
   ichi.sendMessage(m.chat, { video: global.thumbnail, caption: menuu+ownermenu(prefix)+'\n'+groupmenu(prefix)+'\n'+storemenu(prefix)+'\n'+rpgmenu(prefix)+'\n'+makermenu(prefix)+'\n'+downloadmenu(prefix)+'\n'+textpromenu(prefix)+'\n'+ephotomenu(prefix)+'\n'+photooxymenu(prefix)+'\n'+funmenu(prefix)+'\n'+islamimenu(prefix)+'\n'+randommenu(prefix)+'\n'+searchmenu(prefix)+'\n'+gachamenu(prefix)+'\n'+asupanmenu(prefix)+'\n'+randomimagemenu(prefix)+'\n'+randomanimemenu(prefix)+'\n'+wallpapermenu(prefix)+'\n'+nsfwmenu(prefix)+'\n'+othermenu(prefix), buttons: buttonmenu, contextInfo: { externalAdReply: { showAdAttribution: true, title: global.packname, body: global.author, description: 'Made With ❤️ '+global.ownerName, mediaType: 2, thumbnail: global.thumb, mediaUrl: global.sosmed}}}, { quoted: m })
   }
