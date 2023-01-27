@@ -9,20 +9,20 @@ const fs = require('fs')
 const chalk = require('chalk')
 
 //===> SESUAIKAN DENGAN KEBUTUHAN MU
-global.ownerNumber = ['6285609233482','6285609233482'] //Ganti Jadi Nomer mu Biar Fitur Ownernya Bisa Dipake
-global.Rowner = '6285609233482' //Owner Utama
-global.ownerName = 'Nzrl Afndi' //Ganti Jadi Namamu
-global.packname = 'Subscribe YT' //Ganti Jadi Nama Botmu
-global.author = 'NZRLAFNDI' //Ganti Jadi Namamu
+global.ownerNumber = ['6285742344873'] //Ganti Jadi Nomer mu Biar Fitur Ownernya Bisa Dipake
+global.Rowner = '6285742344873' //Owner Utama
+global.ownerName = 'Xyann    555' //Ganti Jadi Namamu
+global.packname = 'Xyann   555' //Ganti Jadi Nama Botmu
+global.author = 'wa.me/6285742344873\nwa.me/6281399593128' //Ganti Jadi Namamu
 global.prefa = ['','.','#','!'] //Ilangin Prefix Yang '' Kalau Gamau No Prefix
-global.sessionName = 'sesi' //Saran Gausah Diganti Lagi
-global.webme = 'https://linktr.ee/NzrlAfndi' //Ganti Jadi Bebas Web Sosmed Mu
+global.sessionName = 'xyann' //Saran Gausah Diganti Lagi
+global.webme = 'https://github.com/IyanGz' //Ganti Jadi Bebas Web Sosmed Mu
 global.sosmed = 'https://www.instagram.com/_nzrlafndi' //Ganti Jadi Web Sosmed Mu
 
 //====> SARAN GAUSAH DIGANTI SIH DAH PAS SEMUA
 global.limitAwal = {
  prem: 'Unlimited',
- free: 70
+ free: 50
 }
 global.multiplier = 69 // Semakin Tinggi Nilai nya Semakin Sulit Naik Level
 global.limitEnd = 'Limit Kamu Telah Habis Silahkan Buy Di Shop Atau Tunggu Sampai Limit Reset'
